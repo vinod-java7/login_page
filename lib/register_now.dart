@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:login_page/repo/login_register_repo.dart';
 
 class RegisterNow extends StatelessWidget {
-  const RegisterNow({super.key});
+ RegisterNow({super.key});
 
+final loginRepo = LoginRegisterRepo();
+  final emailEdit = TextEditingController(text: "");
+final passwordEdit = TextEditingController(text: "");
+final userNameEdit = TextEditingController(text: "");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +40,7 @@ class RegisterNow extends StatelessWidget {
                       child: Container(
                         height: 13,
                         child: TextField(
+                          controller: userNameEdit,
                           decoration: InputDecoration(
                               border: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.black),
@@ -59,6 +66,7 @@ class RegisterNow extends StatelessWidget {
                       child: Container(
                         height: 13,
                         child: TextField(
+                            controller: emailEdit,
                           decoration: InputDecoration(
                               border: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.black),
@@ -88,6 +96,8 @@ class RegisterNow extends StatelessWidget {
                       child: Container(
                         height: 13,
                         child: TextField(
+                            controller: passwordEdit,
+                            obscureText: true,
                           decoration: InputDecoration(
                               border: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.black),
@@ -100,8 +110,11 @@ class RegisterNow extends StatelessWidget {
               ),
               SizedBox(height: 15.0),
               ElevatedButton(
-                onPressed: () {
-                  print('Registration successful');
+                onPressed: () async{
+                  final isSuccess = await loginRepo.performRegister(userNameEdit.text, emailEdit.text, passwordEdit.text);
+                 
+                 Fluttertoast.showToast(msg: isSuccess? "User Registered successfully": "User Registration Failed");
+                
                 },
                 child: Text("Register"),
               ),
